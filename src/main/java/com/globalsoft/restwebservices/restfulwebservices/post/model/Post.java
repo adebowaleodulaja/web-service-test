@@ -5,29 +5,47 @@
  */
 package com.globalsoft.restwebservices.restfulwebservices.post.model;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.globalsoft.restwebservices.restfulwebservices.user.model.User;
+import java.io.Serializable;
+import javax.persistence.Entity;
+import javax.persistence.FetchType;
+import javax.persistence.GeneratedValue;
+import javax.persistence.Id;
+import javax.persistence.ManyToOne;
 
 /**
  *
  * @author adebowale.odulaja
  */
-public class Post {
+@Entity
+public class Post implements Serializable{
     
-    private int postId;
+    @Id
+    @GeneratedValue
+    private Integer postId;
     private String postDetails;
+    
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JsonIgnore
     public User userId;
 
-    public Post(int postId, String postDetails, User userId) {
+    public Post() {
+    }
+    
+    
+
+    public Post(int postId, String postDetails) {
         this.postId = postId;
         this.postDetails = postDetails;
-        this.userId = userId;
+        //this.userId = userId;
     }
 
-    public int getPostId() {
+    public Integer getPostId() {
         return postId;
     }
 
-    public void setPostId(int postId) {
+    public void setPostId(Integer postId) {
         this.postId = postId;
     }
 
@@ -45,6 +63,12 @@ public class Post {
 
     public void setUserId(User userId) {
         this.userId = userId;
+    }
+    
+
+    @Override
+    public String toString() {
+        return "Post{" + "postId=" + postId + ", postDetails=" + postDetails +'}';
     }
     
     

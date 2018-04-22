@@ -1,3 +1,57 @@
----Implementing Monitoring in API---
-We use some dependencies
-    -spring-boot-starter-actuator and spring-data-rest-hal-browser
+Using actuator allows us to get information about our API, also know as application monitoring.
+This can be added in the pom.xml file using the format below
+    <dependency>
+        <groupId>org.springframework.boot</groupId>
+        <artifactId>spring-boot-starter-actuator</artifactId>
+    </dependency>
+
+We can use the 'hal browser' to browse to the data that's being provided by the services. The dependency is used as below.
+ <dependency>
+        <groupId>org.springframework.data</groupId>
+        <artifactId>spring-data-rest-hal-browser</artifactId>
+</dependency>
+
+How to get the browser to load automatically as soon as there's a code change. We use the dependency called 'springboot developer tools'
+
+Basic things to do when creating a Controller  are:
+    - Tell Spring that the class is going to handle HTTP request (Rest) by using @RestController at top of the class definition.
+    - Determine what type of http request, define the URI, create a method that'd handle the request.
+
+****Internationalization****
+The first thing to do is to configure a LocaleResolver, this is done in the xxApplication.java file by using @Bean LocaleResoler
+    - Secondly, create different .properties files that'd contain the information you wish to internationalize.
+    - In the xxApplication.java file, create another bean @Bean ResourceBundleMessageResource
+    - Update the controller (might be all) to use the MessageSource and autowire it.
+    - In the controller, update the required endpoint to get the information to be returned from the object of the MessageSource,
+        you also have to specify the way consumer would pass in the Locale value, this is done in the concerned endpoint.
+        e.g is in HelloWorldController.java
+
+******XML Dependency****
+---Accepting XML in Rest----
+- Include the dependency in pom.xml, the groupId is com.fasterxml.jackson.dataformat
+
+****Configuring Swagger for documentation*****
+- Add the swagger dependency in your pom.xml file (An example is in restful-web-services project)
+- Configure swagger, create a java class and do all your configuration (An example is in SwaggerConfig.java in restful-web-services project)
+
+If there's a field that you'd want not to be exposed to end user, you can simply use the annotation @JsonIgnore on that field. e.g 
+    @JsonIgnore
+    private String filedx;
+    Another approach would be to add @JsonIgnoreProperties annotation on the class
+    @JsonIgnoreProperties(value={x,y,z})
+    public class XX{
+    }
+
+*****Security*****
+Using basic authentication, all that's needed is to include the dependency 
+    <dependency>
+        <groupId>org.springframework.boot</groupId>
+        <artifactId>spring-boot-starter-security</artifactId>
+    </dependency>
+and to override the default username and password, include the lines below in the application.properties file.
+    security.user.name = 'your_username'
+    security.user.password = 'your_password'
+
+*****JPA (Project is in jpa-in-10-steps)******
+To define a class as an entity, use the @Entity annotation on the class definition.
+Use @Id and @GeneratedValue for stating a field as a primary key and auto generate value respectively.
